@@ -1,0 +1,13 @@
+.loginContainer{
+
+    display: flex;
+    align-items: center;
+    min-height: 600px;
+}
+
+.col{
+
+    display: flex;
+    justify-content: flex-end;
+
+}

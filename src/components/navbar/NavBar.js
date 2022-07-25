@@ -8,7 +8,7 @@ const NavBar = ({ brandName, children  })=>{
     return(
 
         <div className='nav'>
-            <label>{brandName}</label>
+            <span>{brandName}</span>
             {children}
 
       </div>

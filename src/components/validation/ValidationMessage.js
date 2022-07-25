@@ -1,10 +1,10 @@
 import React from 'react';
 
-const ValidationMessage = ({ hasError, collection,  property })=>{
+const ValidationMessage = ({  collection,  property })=>{
 
     return (
 
-        hasError&&collection[property]&&collection[property].map( 
+        collection&&collection.hasErrors&&collection[property]&&collection[property].map( 
             (e) => (<p key={e}>{e}</p>))
         
     );

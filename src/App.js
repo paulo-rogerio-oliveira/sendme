@@ -21,8 +21,8 @@ import Unsigned from './components/authCondition/Unsigned';
 
 
 /* Pages from app */
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
+import Login from './pages/auth/login/Login';
+import Register from './pages/auth/register/Register';
 import SmsAdd from './pages/sms/SmsAdd';
 import SmsEdit from './pages/sms/SmsEdit';
 import SmsList from './pages/sms/SmsList';

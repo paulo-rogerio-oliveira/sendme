@@ -73,7 +73,8 @@ input:not(:placeholder-shown) + label, input:focus+label{
 .formRow input{
 
     margin-bottom: 5px;
-    border-bottom: 1px solid var(--textColor);
+    border-bottom: 1px solid ;
+    
 }
 
 .formRow label{

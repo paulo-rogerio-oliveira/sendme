@@ -1,4 +1,4 @@
-
+import { serviceUtils } from "./serviceUtils";
 /**
  * Login an user in app
  */
@@ -7,24 +7,18 @@ const autenticate = async(user) =>{
  
     try {
         
-        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, { method: "POST", headers: { "Content-Type": "application/json"} , body: JSON.stringify(user)  });
-    
-        const data = await response.json();
-    
-        if(response.status === 422){
+        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, { method: "POST", headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)  });
+        const data = serviceUtils.getResultWrraper(response.status, response);
 
-            if(!data.errors)
-            console.log({errors: data});
-            return { errors: data}
+        if(data.token){
+            localStorage.setItem("user", JSON.stringify(data));
+
         }
-
-        localStorage.setItem("user", JSON.stringify(data));
-    
+            
         return data;
 
     } catch (error) {
-        let errors = { errors:{  general: ["Error in request."] }};
-        return errors;
+        return serviceUtils.getResultWrraper(400, error);
     }
 
 
@@ -40,23 +34,15 @@ const register = async(user)=>{
 
     try {
 
-        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, {method: "PUT", headers: {"Content-Type": "application/json", "accept": "*/*"} , body: JSON.stringify(user)});
-
-        const data = await response.json();
-        
-        if(response.status === 422){
-            if(!data.errors){
-
-                return { errors: data}
-            }
-        }
+        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, {method: "PUT", headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)});
+        const data = serviceUtils.getResultWrraper(response.status, response);
         
         return data;
 
         
     } catch (error) {
-        let errors = { errors:{  general: ["Error in request."] }};
-        return errors;
+        return serviceUtils.getResultWrraper(400, error);
+      
     }
 
 

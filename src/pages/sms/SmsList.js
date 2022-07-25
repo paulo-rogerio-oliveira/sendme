@@ -26,11 +26,11 @@ const SmsList = ()=>{
 
        const result = await service.listSmsConfiguration();
        
-       if (!result.errors) {
+       if (!result.hasErrors) {
             setModelList(result);
        } else{
           
-            setErrors(result.errors);
+            setErrors(result);
             console.log(errors);
        }
        

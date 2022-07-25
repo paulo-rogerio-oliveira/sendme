@@ -22,10 +22,10 @@ export const autenticate = createAsyncThunk(
 
         
         const response = await userService.autenticate(user);
-
+        console.log(response);
         /* if exists object erros in response manually reject this */
-        if(response.errors){
-            return thunkApi.rejectWithValue(response.errors);      
+        if(response.hasErrors){
+            return thunkApi.rejectWithValue(response);      
         }
            
         return response; 
@@ -49,15 +49,15 @@ export const autenticate = createAsyncThunk(
         const registerResponse = await userService.register(user);
 
         /* if exists object erros in response manually reject this */
-        if(registerResponse.errors){
-            return thunkApi.rejectWithValue(registerResponse.errors);      
+        if(registerResponse.hasErrors){
+            return thunkApi.rejectWithValue(registerResponse);      
         }
 
         const authResponse = await userService.autenticate(user);
    
             /* if exists object erros in response manually reject this */
-        if(registerResponse.errors){
-            return thunkApi.rejectWithValue(authResponse.errors);      
+        if(registerResponse.hasErrors){
+            return thunkApi.rejectWithValue(authResponse);      
         }
         
         return authResponse; 

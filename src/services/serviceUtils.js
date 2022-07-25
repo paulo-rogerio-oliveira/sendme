@@ -10,18 +10,23 @@ const getResultWrraper = (responseStatus, response)=> {
     /* error in client side */
     if(responseStatus > 399 ) {
         
-        if(!response.errors){
+        if(response.errors){
 
-            let errors = {};
+            response.errors.hasErrors = true;
+            return response.errors;
+        }
+        else{
+
+            let errors = {hasErrors:true};
 
             if(response.message) {
 
-                errors = { errors: { general: [response.message]}};
+                errors.general = [response.message] ;
                 console.log(response.stack);
 
             } else {
 
-                errors = { errors:{  general: [response] }};
+                errors.general = ["Request error"] ;
 
             } 
              
@@ -38,16 +43,20 @@ const getResultWrraper = (responseStatus, response)=> {
  */
 const getDefaultHeaders = (user, method) =>{
 
-
-  
     const headers = {
-        
+            
         "Content-Type": "application/json", 
         "accept": "*/*",
-        "method": method,
-        "Authorization": user&& `Bearer ${user.token}`,
+
 
     } 
+
+    if(user&&user.token){
+       
+        headers.Authorization = `Bearer ${user.token}`;
+
+    }
+
     console.log(headers );
     return headers;
 
