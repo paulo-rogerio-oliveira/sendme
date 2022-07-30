@@ -25,6 +25,7 @@ export const autenticate = createAsyncThunk(
         console.log(response);
         /* if exists object erros in response manually reject this */
         if(response.hasErrors){
+            console.log(response);
             return thunkApi.rejectWithValue(response);      
         }
            
@@ -100,6 +101,7 @@ export const autenticate = createAsyncThunk(
                                                                         state.success=false;
                                                                         
                                                                     });
+                                                                    
             builder.addCase(autenticate.fulfilled, (state, action) => {
                                                                         state.user = action.payload; 
                                                                         state.errors = null; 

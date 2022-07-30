@@ -11,7 +11,8 @@ export const smsService = ()=>{
         try {
 
             const response = await fetch(`${process.env.REACT_APP_API}`, {method: "POST", headers: serviceUtils.getDefaultHeaders(authenticatedUser), body: JSON.stringify(value)});        
-            return serviceUtils.getResultWrraper(response.status, response);
+            const data =  serviceUtils.getResultWrraper(response.status, response);
+            return data;
 
         } catch (error) {
 
@@ -25,7 +26,8 @@ export const smsService = ()=>{
     
         try {
             const response = await fetch(`${process.env.REACT_APP_API}`, {method: "GET", headers: serviceUtils.getDefaultHeaders(authenticatedUser)});
-            return serviceUtils.getResultWrraper(response.status, response);
+            const data =  serviceUtils.getResultWrraper(response.status, response);
+            return data;
 
         } catch (error) {
 
@@ -41,7 +43,8 @@ export const smsService = ()=>{
         try {
             
             const response = await fetch(`${process.env.REACT_APP_API}`, {method: "DELETE", headers: serviceUtils.getDefaultHeaders(authenticatedUser,"remove"), body: JSON.stringify({ id: removeID, })});
-            return serviceUtils.getResultWrraper(response.status, response);
+            const data =  serviceUtils.getResultWrraper(response.status, response);
+            return data;
 
         } catch (error) {
 

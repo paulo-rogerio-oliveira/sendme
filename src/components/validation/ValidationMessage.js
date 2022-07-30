@@ -4,8 +4,8 @@ const ValidationMessage = ({  collection,  property })=>{
 
     return (
 
-        collection&&collection.hasErrors&&collection[property]&&collection[property].map( 
-            (e) => (<p key={e}>{e}</p>))
+        collection&&collection.hasErrors&&collection.errors[property]&&collection.errors[property].errors.map( 
+            (e) => (<p key={e.errorMessage}>{e.errorMessage}</p>))
         
     );
 

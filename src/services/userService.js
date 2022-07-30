@@ -7,14 +7,15 @@ const autenticate = async(user) =>{
  
     try {
         
-        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, { method: "POST", headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)  });
+        console.log(JSON.stringify(user));
+        const response = await fetch(`${process.env.REACT_APP_API_AUTH}`,  {  method: "POST",  headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)  });
         const data = serviceUtils.getResultWrraper(response.status, response);
 
         if(data.token){
-            localStorage.setItem("user", JSON.stringify(data));
 
+            localStorage.setItem("user", data);
         }
-            
+
         return data;
 
     } catch (error) {
@@ -33,6 +34,7 @@ const autenticate = async(user) =>{
 const register = async(user)=>{
 
     try {
+
 
         const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, {method: "PUT", headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)});
         const data = serviceUtils.getResultWrraper(response.status, response);

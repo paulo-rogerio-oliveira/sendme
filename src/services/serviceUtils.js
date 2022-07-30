@@ -1,52 +1,90 @@
 
+
+
+const fillRequestErrors = (errorMessage) =>{
+   
+    const newObject = {hasErrors: true};
+    newObject.errors = { general: { errors:   [{ errorMessage: errorMessage }] }}
+    console.log(newObject);
+    return newObject;
+
+}
+
+const fillRequestErrorsFromAPI = (apiErrors, response) =>{
+    
+    const newObject = {hasErrors: true};
+    
+    Object.entries(apiErrors).forEach(([key, value]) => {
+
+            const newErrors = [];
+            value.forEach(e=> newErrors.push({errorMessage: e}))
+
+            if(!response.errors[key].errors){
+                 newObject.errors = {};
+                 newObject.errors[key] = { errors: newErrors};
+                 
+            }
+                               
+
+        });
+
+    console.log(newObject);
+    return newObject;
+
+}
+
 /**
  * 
  * @param  responseStatus  wrapper API object error for validation
  * @returns 
  */
-const getResultWrraper = (responseStatus, response)=> {
+const getResultWrraper = async (responseStatus, response)=> {
 
+    let data = {};
+    try {
+
+        data = await response.json();
+
+    } catch (error) {
+
+        console.log(error);
+        return fillRequestErrors("Request error");
+
+    }
+    
 
     /* error in client side */
     if(responseStatus > 399 ) {
-        
-        if(response.errors){
+    
+        console.log(data);
+    
+        if(data.errors){
 
-            response.errors.hasErrors = true;
-            return response.errors;
+            return fillRequestErrorsFromAPI(data.errors, data)
         }
         else{
 
-            let errors = {hasErrors:true};
-
-            if(response.message) {
-
-                errors.general = [response.message] ;
-                console.log(response.stack);
-
-            } else {
-
-                errors.general = ["Request error"] ;
-
-            } 
-             
-             return errors ;
+            return fillRequestErrors(data.message? data.message: "Request error");
+                        
         }         
 
     }
 
-    return response.json();
+    console.log(data);
+    return data;
+
+   
 }
 
 /**
  * Get default headers for use in API
  */
-const getDefaultHeaders = (user, method) =>{
+const getDefaultHeaders = (user) =>{
 
     const headers = {
             
-        "Content-Type": "application/json", 
-        "accept": "*/*",
+        "Content-Type": "application/json",
+        "Origin": "https://localhost:3000",
 
 
     } 
