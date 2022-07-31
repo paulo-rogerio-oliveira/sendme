@@ -11,12 +11,13 @@ export const smsService = ()=>{
         try {
 
             const response = await fetch(`${process.env.REACT_APP_API}`, {method: "POST", headers: serviceUtils.getDefaultHeaders(authenticatedUser), body: JSON.stringify(value)});        
-            const data =  serviceUtils.getResultWrraper(response.status, response);
-            return data;
+            const data = await response.json();
+            const result =  serviceUtils.padronizeResponse(response.status, data);
+            return result;
 
         } catch (error) {
 
-            return serviceUtils.getResultWrraper(400, error);
+            return serviceUtils.padronizeResponse(400, error);
 
         }
 
@@ -25,13 +26,15 @@ export const smsService = ()=>{
     const listSmsConfiguration= async()=>{
     
         try {
-            const response = await fetch(`${process.env.REACT_APP_API}`, {method: "GET", headers: serviceUtils.getDefaultHeaders(authenticatedUser)});
-            const data =  serviceUtils.getResultWrraper(response.status, response);
-            return data;
+            const response = await fetch(`${process.env.REACT_APP_API}`, {   method: "GET", headers: serviceUtils.getDefaultHeaders(authenticatedUser)});
+            console.log(response);
+            const data = await response.json();
+            const result =  serviceUtils.padronizeResponse(response.status, data);
+            return result;
 
         } catch (error) {
 
-            return serviceUtils.getResultWrraper(400, error);
+            return serviceUtils.padronizeResponse(400, error);
 
         }
 
@@ -42,13 +45,14 @@ export const smsService = ()=>{
 
         try {
             
-            const response = await fetch(`${process.env.REACT_APP_API}`, {method: "DELETE", headers: serviceUtils.getDefaultHeaders(authenticatedUser,"remove"), body: JSON.stringify({ id: removeID, })});
-            const data =  serviceUtils.getResultWrraper(response.status, response);
-            return data;
+            const response = await fetch(`${process.env.REACT_APP_API}`, {method: "DELETE", headers: serviceUtils.getDefaultHeaders(authenticatedUser), body: JSON.stringify({ id: removeID, })});
+            const data = await response.json();
+            const result =  serviceUtils.padronizeResponse(response.status, data);
+            return result;
 
         } catch (error) {
 
-            return serviceUtils.getResultWrraper(400, error);
+            return serviceUtils.padronizeResponse(400, error);
 
         }
     }

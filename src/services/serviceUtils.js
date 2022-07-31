@@ -1,30 +1,39 @@
 
-
+import {v4 as Guid} from 'uuid'
 
 const fillRequestErrors = (errorMessage) =>{
-   
+    
+    const guid = Guid();
+
     const newObject = {hasErrors: true};
-    newObject.errors = { general: { errors:   [{ errorMessage: errorMessage }] }}
+    newObject.errors = { general: { errors:   [{ id: guid.slice(0,8), errorMessage }] }}
     console.log(newObject);
     return newObject;
 
 }
 
-const fillRequestErrorsFromAPI = (apiErrors, response) =>{
+const fillRequestErrorsFromAPI = (apiErrors) =>{
     
     const newObject = {hasErrors: true};
+    newObject.errors = {};
+    const guid = Guid();
     
     Object.entries(apiErrors).forEach(([key, value]) => {
-
+        debugger
             const newErrors = [];
-            value.forEach(e=> newErrors.push({errorMessage: e}))
 
-            if(!response.errors[key].errors){
-                 newObject.errors = {};
-                 newObject.errors[key] = { errors: newErrors};
-                 
+            if (value.errors){
+                value.errors.forEach(e=> newErrors.push({ id: guid.slice(0,8), errorMessage: e.errorMessage}))
+            } else {
+                
+                if(Array.isArray(value)){
+
+                    value.forEach(e=> newErrors.push({id: guid.slice(0,8), errorMessage: e}))
+                }
             }
-                               
+
+            if(newErrors.length>0) newObject.errors[key] = { errors: newErrors};
+                             
 
         });
 
@@ -34,45 +43,31 @@ const fillRequestErrorsFromAPI = (apiErrors, response) =>{
 }
 
 /**
- * 
+ * Return json result or errors object padronized to application
  * @param  responseStatus  wrapper API object error for validation
  * @returns 
  */
-const getResultWrraper = async (responseStatus, response)=> {
+const padronizeResponse = async (responseStatus, response)=> {
 
-    let data = {};
-    try {
-
-        data = await response.json();
-
-    } catch (error) {
-
-        console.log(error);
-        return fillRequestErrors("Request error");
-
-    }
     
-
     /* error in client side */
     if(responseStatus > 399 ) {
     
-        console.log(data);
+        console.log(response);
     
-        if(data.errors){
+        if(response.errors){
 
-            return fillRequestErrorsFromAPI(data.errors, data)
+            return fillRequestErrorsFromAPI(response.errors)
         }
         else{
 
-            return fillRequestErrors(data.message? data.message: "Request error");
+            return fillRequestErrors(response.message? response.message: "Request error");
                         
         }         
 
     }
 
-    console.log(data);
-    return data;
-
+    return response;
    
 }
 
@@ -83,16 +78,15 @@ const getDefaultHeaders = (user) =>{
 
     const headers = {
             
-        "Content-Type": "application/json",
-        "Origin": "https://localhost:3000",
-
-
     } 
+
+    headers["Content-Type"] = "application/json";
+    headers["Accept"] = "*/*";
+    
 
     if(user&&user.token){
        
-        headers.Authorization = `Bearer ${user.token}`;
-
+        headers["Authorization"]= `Bearer ${user.token}`;
     }
 
     console.log(headers );
@@ -102,7 +96,7 @@ const getDefaultHeaders = (user) =>{
 
 export const serviceUtils ={
 
-    getResultWrraper,
+    padronizeResponse,
     getDefaultHeaders,
 
 }

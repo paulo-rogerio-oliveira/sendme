@@ -17,15 +17,16 @@
     "react-scripts": "^2.1.3",
     "reactstrap": "^9.1.1",
     "redux": "^4.2.0",
+    "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --coverage",
     "eject": "react-scripts eject",
-    "proxy": "https://randomservice.com"
-
+    "proxy": "https://randomservice.com",
+    "test:debug": "react-scripts --inspect test --runInBand --no-cache"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +45,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-react": "^7.18.6",
+    "jest": "^28.1.3",
+    "react-test-renderer": "^18.2.0"
   }
 }

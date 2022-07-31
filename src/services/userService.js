@@ -9,17 +9,18 @@ const autenticate = async(user) =>{
         
         console.log(JSON.stringify(user));
         const response = await fetch(`${process.env.REACT_APP_API_AUTH}`,  {  method: "POST",  headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)  });
-        const data = serviceUtils.getResultWrraper(response.status, response);
+        const data = await response.json();
+        const result = serviceUtils.padronizeResponse(response.status, response);
 
-        if(data.token){
+        if(result.token){
 
             localStorage.setItem("user", data);
         }
 
-        return data;
+        return result;
 
     } catch (error) {
-        return serviceUtils.getResultWrraper(400, error);
+        return serviceUtils.padronizeResponse(400, error);
     }
 
 
@@ -37,13 +38,14 @@ const register = async(user)=>{
 
 
         const response = await fetch(`${process.env.REACT_APP_API_AUTH}`, {method: "PUT", headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)});
-        const data = serviceUtils.getResultWrraper(response.status, response);
+        const data = await response.json();
+        const result = serviceUtils.padronizeResponse(response.status, data);
         
-        return data;
+        return result;
 
         
     } catch (error) {
-        return serviceUtils.getResultWrraper(400, error);
+        return serviceUtils.padronizeResponse(400, error);
       
     }
 
