@@ -2,7 +2,7 @@ import { serviceUtils } from "./serviceUtils";
 /**
  * Login an user in app
  */
-const autenticate = async(user) =>{
+const authenticate = async(user) =>{
 
  
     try {
@@ -10,7 +10,7 @@ const autenticate = async(user) =>{
         console.log(JSON.stringify(user));
         const response = await fetch(`${process.env.REACT_APP_API_AUTH}`,  {  method: "POST",  headers: serviceUtils.getDefaultHeaders(), body: JSON.stringify(user)  });
         const data = await response.json();
-        const result = serviceUtils.padronizeResponse(response.status, response);
+        const result = serviceUtils.padronizeResponse(response.status, data);
 
         if(result.token){
 
@@ -58,7 +58,7 @@ const register = async(user)=>{
 
 export const userService ={
 
-    autenticate,
+    authenticate,
     register,
 
 }

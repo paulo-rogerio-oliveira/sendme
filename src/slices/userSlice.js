@@ -18,10 +18,10 @@ export const initialState ={
  * Authenticate user in Api
  */
 export const autenticate = createAsyncThunk(
-    "user/autenticate", async (user, thunkApi) =>{
+    "user/authenticate", async (user, thunkApi) =>{
 
         
-        const response = await userService.autenticate(user);
+        const response = await userService.authenticate(user);
         console.log(response);
         /* if exists object erros in response manually reject this */
         if(response.hasErrors){
@@ -101,7 +101,7 @@ export const autenticate = createAsyncThunk(
                                                                         state.success=false;
                                                                         
                                                                     });
-                                                                    
+
             builder.addCase(autenticate.fulfilled, (state, action) => {
                                                                         state.user = action.payload; 
                                                                         state.errors = null; 
